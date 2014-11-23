@@ -1,0 +1,18 @@
+{
+    "name": "rosetta-p67-wegbl",
+    "version": "0.0.0",
+    "dependencies": {
+        "threejs-dist":    "latest"
+    },
+    "authors": [
+      {
+        "name": "David Ramalho",
+        "email": "david@ragingnexus.com",
+        "homepage": "http://ragingnexus.com"
+      }
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/dramalho/rosetta-p67-wegbl.git"
+    }
+}

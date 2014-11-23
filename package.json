@@ -1,0 +1,10 @@
+{
+  "name": "rosetta-p67-wegbl",
+  "version": "0.0.0",
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-coffee": "latest",
+    "grunt-bower-task": "latest",
+    "grunt-serve": "latest"
+  }
+}
