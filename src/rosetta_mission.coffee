@@ -1,6 +1,3 @@
-#= require ../vendor/three.min
-#= require ../vendor/OBJLoader
-
 class RosettaMission
   ROSETTA_DISTANCE: 20
   ORBIT_RADIUS:     100
