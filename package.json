@@ -5,6 +5,7 @@
     "grunt": "latest",
     "grunt-contrib-coffee": "latest",
     "grunt-bower-task": "latest",
-    "grunt-serve": "latest"
+    "grunt-serve": "latest",
+    "grunt-contrib-watch": "latest"
   }
 }

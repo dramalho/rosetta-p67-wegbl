@@ -67,7 +67,6 @@ class RosettaMission
     @initThreeJsScene()
     @initThreeJsCamera()
     @initThreeJsRenderer()
-    @initThreeJsLoadingManager()
     @initThreeJsSceneLights()
     @installResizeHandler()
 
@@ -102,36 +101,28 @@ class RosettaMission
     @scene = new THREE.Scene()
 
   initThreeJsRenderer: =>
-    @renderer = new THREE.WebGLRenderer(alpha: true)
+    @renderer = new THREE.WebGLRenderer(alpha: true) # transparent background
     @renderer.setSize(@targetElementWidth(), @targetElementHeight())
 
-    el = @renderer.domElement
-    el.className = el.className + " header-element"
     @targetElement().appendChild( @renderer.domElement )
 
   initThreeJsCamera: =>
     @camera = new THREE.PerspectiveCamera(
-      50,
-      @targetElementWidth() / @targetElementHeight(),
-      0.1,
-      1000
+      50,   # Vertical field of view
+      @targetElementWidth() / @targetElementHeight(), # aspect ratio
+      0.1,  # Near plane
+      1000  # Far plane
     )
 
+    # Initial position of the camera
     @camera.position.x = -150
     @camera.position.y = 25
 
-  initThreeJsLoadingManager: =>
-    @manager = new THREE.LoadingManager()
-    @manager.onProgress = ( item, loaded, total ) ->
-      console.log( item, loaded, total )
+    # Point the camera to the origin
+    @camera.lookAt( @scene.position )
 
   initThreeJsSceneLights: =>
     @scene.add( new THREE.AmbientLight( 0xffffff ) )
-
-    directionalLight = new THREE.DirectionalLight( 0xffffff )
-    directionalLight.position.set( 0, 0, 1 )
-
-    @scene.add( directionalLight )
 
   loadTextures: =>
     @textures = {
@@ -140,12 +131,12 @@ class RosettaMission
       orbits: new THREE.LineBasicMaterial(color: 0xff00)
     }
 
-    new THREE.ImageLoader( @manager ).load 'assets/comet-texture.jpg', (image) =>
+    new THREE.ImageLoader().load 'assets/comet-texture.jpg', (image) =>
       @textures.comet.image = image
       @textures.comet.needsUpdate = true
 
   loadObjects: =>
-    loader = new THREE.OBJLoader( @manager )
+    loader = new THREE.OBJLoader()
 
     # Comet
     loader.load "assets/comet_67P.obj", @createComet
@@ -166,7 +157,6 @@ class RosettaMission
     @objects.rosetta.rotation.z = @objects.comet.rotation.z += 0.01
     @objects.rosetta.rotation.x = @objects.comet.rotation.x -= 0.01
 
-    @camera.lookAt( @scene.position )
     @renderer.render(@scene, @camera)
 
   calculateCometPosition: (time) ->

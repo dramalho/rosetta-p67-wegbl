@@ -29,10 +29,16 @@ module.exports = (grunt) ->
     serve:
       path: './dist/'
 
+    watch:
+      scripts:
+        files: ['src/*.coffee'],
+        tasks: ['coffee']
+
   # load plugins
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-serve'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
 
   # tasks
   grunt.registerTask 'default', ['coffee','bower:install','serve']

@@ -14,7 +14,6 @@ RosettaMission = (function() {
     this.loadObjects = __bind(this.loadObjects, this);
     this.loadTextures = __bind(this.loadTextures, this);
     this.initThreeJsSceneLights = __bind(this.initThreeJsSceneLights, this);
-    this.initThreeJsLoadingManager = __bind(this.initThreeJsLoadingManager, this);
     this.initThreeJsCamera = __bind(this.initThreeJsCamera, this);
     this.initThreeJsRenderer = __bind(this.initThreeJsRenderer, this);
     this.initThreeJsScene = __bind(this.initThreeJsScene, this);
@@ -97,7 +96,6 @@ RosettaMission = (function() {
     this.initThreeJsScene();
     this.initThreeJsCamera();
     this.initThreeJsRenderer();
-    this.initThreeJsLoadingManager();
     this.initThreeJsSceneLights();
     this.installResizeHandler();
     this.axis_helper = {
@@ -144,35 +142,22 @@ RosettaMission = (function() {
   };
 
   RosettaMission.prototype.initThreeJsRenderer = function() {
-    var el;
     this.renderer = new THREE.WebGLRenderer({
       alpha: true
     });
     this.renderer.setSize(this.targetElementWidth(), this.targetElementHeight());
-    el = this.renderer.domElement;
-    el.className = el.className + " header-element";
     return this.targetElement().appendChild(this.renderer.domElement);
   };
 
   RosettaMission.prototype.initThreeJsCamera = function() {
     this.camera = new THREE.PerspectiveCamera(50, this.targetElementWidth() / this.targetElementHeight(), 0.1, 1000);
     this.camera.position.x = -150;
-    return this.camera.position.y = 25;
-  };
-
-  RosettaMission.prototype.initThreeJsLoadingManager = function() {
-    this.manager = new THREE.LoadingManager();
-    return this.manager.onProgress = function(item, loaded, total) {
-      return console.log(item, loaded, total);
-    };
+    this.camera.position.y = 25;
+    return this.camera.lookAt(this.scene.position);
   };
 
   RosettaMission.prototype.initThreeJsSceneLights = function() {
-    var directionalLight;
-    this.scene.add(new THREE.AmbientLight(0xffffff));
-    directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(0, 0, 1);
-    return this.scene.add(directionalLight);
+    return this.scene.add(new THREE.AmbientLight(0xffffff));
   };
 
   RosettaMission.prototype.loadTextures = function() {
@@ -185,7 +170,7 @@ RosettaMission = (function() {
         color: 0xff00
       })
     };
-    return new THREE.ImageLoader(this.manager).load('assets/comet-texture.jpg', (function(_this) {
+    return new THREE.ImageLoader().load('assets/comet-texture.jpg', (function(_this) {
       return function(image) {
         _this.textures.comet.image = image;
         return _this.textures.comet.needsUpdate = true;
@@ -195,7 +180,7 @@ RosettaMission = (function() {
 
   RosettaMission.prototype.loadObjects = function() {
     var loader;
-    loader = new THREE.OBJLoader(this.manager);
+    loader = new THREE.OBJLoader();
     loader.load("assets/comet_67P.obj", this.createComet);
     return loader.load("assets/rosetta_low_poly.obj", this.createRosetta);
   };
@@ -214,7 +199,6 @@ RosettaMission = (function() {
     this.calculateRosettaPosition(time);
     this.objects.rosetta.rotation.z = this.objects.comet.rotation.z += 0.01;
     this.objects.rosetta.rotation.x = this.objects.comet.rotation.x -= 0.01;
-    this.camera.lookAt(this.scene.position);
     return this.renderer.render(this.scene, this.camera);
   };
 
